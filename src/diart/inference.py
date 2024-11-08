@@ -14,6 +14,8 @@ from pyannote.database.util import load_rttm
 from pyannote.metrics.base import BaseMetric
 from rx.core import Observer
 from tqdm import tqdm
+import soundfile as sf
+
 
 from . import blocks
 from . import operators as dops
@@ -159,7 +161,7 @@ class StreamingInference:
     def attach_hooks(
         self, *hooks: Callable[[Tuple[Annotation, SlidingWindowFeature]], None]
     ):
-        """Attach hooks to the pipeline.
+        """Attach hooks to the pipeline.                                              
 
         Parameters
         ----------
@@ -167,6 +169,31 @@ class StreamingInference:
             Hook functions to consume emitted annotations and audio.
         """
         self.stream = self.stream.pipe(*[ops.do_action(hook) for hook in hooks])
+
+
+    def save_waveform_hook(self, save_path: str = "output"):
+        """Create a hook function to save waveform data.
+
+        Parameters
+        ----------
+        save_path: str
+            The directory path where waveforms will be saved.
+        """
+        count = 0
+
+        def save_waveform(results):
+            nonlocal count
+            prediction, waveform = results
+
+            if prediction:
+                filename = f"{save_path}/waveform{count}.wav"
+                sf.write(filename, waveform.data, samplerate=16000)
+                print(f"Waveform saved to {filename}")
+                count += 1
+
+        return save_waveform
+
+
 
     def attach_observers(self, *observers: Observer):
         """Attach rx observers to the pipeline.
