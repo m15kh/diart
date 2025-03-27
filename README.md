@@ -6,7 +6,7 @@
 <i>🌿 Build AI-powered real-time audio applications in a breeze 🌿</i>
 </p>
 
-<p align="center">
+<p align="center"> 
 <img alt="PyPI Version" src="https://img.shields.io/pypi/v/diart?color=g">
 <img alt="PyPI Downloads" src="https://static.pepy.tech/personalized-badge/diart?period=total&units=international_system&left_color=grey&right_color=brightgreen&left_text=downloads">
 <img alt="Python Versions" src="https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-dark_green">
